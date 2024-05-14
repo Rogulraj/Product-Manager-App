@@ -1,0 +1,151 @@
+.main_layout {
+  height: 80px;
+  width: 100%;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.sub_layout {
+  height: auto;
+  max-width: 1440px;
+  width: 100%;
+}
+
+.sm_container {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 15px;
+  position: relative;
+}
+
+@media screen and (min-width: 600px) {
+  .sm_container {
+    display: none;
+  }
+}
+
+.sm_title_card {
+  height: auto;
+  width: fit-content;
+}
+
+.sm_title_text {
+  color: var(--text_color_primary);
+  font-size: 15px;
+  font-weight: 700;
+  font-family: var(--ff_primary);
+  margin: 0px;
+  cursor: pointer;
+}
+
+.sm_menu_bar_container {
+  height: auto;
+  width: auto;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
+
+.sm_menu_list_container {
+  height: auto;
+  width: auto;
+  background-color: var(--bg_secondary);
+  position: absolute;
+  right: 10px;
+  top: 70px;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 20px;
+  border-radius: 12px;
+}
+
+.sm_nav_item {
+  text-decoration: none;
+  color: var(--text_color_primary);
+  font-family: var(--ff_primary);
+  font-weight: 500;
+}
+
+/** medium device **/
+
+.md_container {
+  display: none;
+}
+
+@media screen and (min-width: 600px) {
+  .md_container {
+    height: 80px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0px 15px;
+    /* border: solid white; */
+  }
+}
+@media screen and (min-width: 1200px) {
+  .md_container {
+    padding: 10px 25px;
+  }
+}
+
+.md_title_container {
+  height: fit-content;
+  width: fit-content;
+  display: flex;
+  flex-direction: column;
+}
+
+.md_title_text {
+  color: var(--text_color_primary);
+  font-size: 22px;
+  font-family: var(--ff_primary);
+  font-weight: 800;
+  margin: 0px;
+  cursor: pointer;
+}
+@media screen and (min-width: 900px) {
+  .md_title_text {
+    font-size: 25px;
+  }
+}
+
+.md_nav_container {
+  height: fit-content;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: end;
+  gap: 15px;
+}
+@media screen and (min-width: 1200px) {
+  .md_nav_container {
+    gap: 30px;
+  }
+}
+
+.md_nav_item {
+  text-decoration: none;
+  color: var(--text_color_primary);
+  font-family: var(--ff_primary);
+  font-weight: 600;
+  font-size: 16px;
+  margin: 0px;
+}
+
+.md_user_image {
+  height: 45px;
+  width: 45px;
+  border-radius: 50%;
+}

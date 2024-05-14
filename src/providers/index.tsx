@@ -34,7 +34,6 @@ const AppProvider = ({ children }: AppProviderProps) => {
           <ConfigProvider
             theme={{
               token: {
-                colorPrimaryBg: "#17181F",
                 fontFamily: "Nunito",
               },
             }}>
