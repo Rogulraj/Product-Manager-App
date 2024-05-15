@@ -19,7 +19,10 @@ import TableRowEditModal from "@components/Modals/TableRowEditModal/TableRowEdit
 import TableRowDeleteModal from "@components/Modals/TableRowDeleteModal/TableRowDeleteModal";
 
 // types
-interface ProductTablePropsType {}
+interface ProductTablePropsType {
+  productList: ProductItem[];
+  categoryList: string[];
+}
 
 interface DataType extends ProductItem {}
 
@@ -28,14 +31,15 @@ type DataIndex = keyof DataType;
 type OnChange = NonNullable<TableProps<DataType>["onChange"]>;
 type Filters = Parameters<OnChange>[1];
 
-const ProductTable: FC<ProductTablePropsType> = ({}) => {
+const ProductTable: FC<ProductTablePropsType> = ({
+  categoryList,
+  productList,
+}) => {
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
   const searchInput = useRef<InputRef>(null);
   const [filteredInfo, setFilteredInfo] = useState<Filters>({});
   const [paginationSize, setPaginationSize] = useState<number>(10);
-
-  const { productList } = useAppSelector((state) => state.product);
 
   const handleSearch = (
     selectedKeys: string[],
@@ -165,10 +169,12 @@ const ProductTable: FC<ProductTablePropsType> = ({}) => {
       title: "Category",
       dataIndex: "category",
       key: "category",
-      filters: [
-        { text: "Mouse", value: "Mouse" },
-        { text: "Key Board", value: "Key Board" },
-      ],
+      filters: categoryList.map((item) => {
+        return {
+          text: item,
+          value: item,
+        };
+      }),
       filteredValue: filteredInfo.category || null,
       onFilter: (value, record) => record.category.includes(value as string),
       ellipsis: true,

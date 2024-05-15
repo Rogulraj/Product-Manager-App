@@ -1,5 +1,7 @@
 // packages
 import React, { FC, FormEvent, useCallback, useMemo, useState } from "react";
+import * as Yup from "yup";
+import { v4 as uuidv4 } from "uuid";
 
 // css
 import ds from "./AddProduct.module.css";
@@ -11,6 +13,17 @@ import { IoIosArrowRoundBack } from "react-icons/io";
 
 import { Steps } from "antd";
 import FloatInputWithBtnCard from "@components/Cards/FloatInputWithBtnCard/FloatInputWithBtnCard";
+import { YupFormValidator } from "@utils/yupFormValidator";
+import { toast } from "sonner";
+import { useAppDispatch, useAppSelector } from "@redux/store/store";
+import { ProductActions, ProductItem } from "@redux/features/products.feature";
+
+const yupValidationScheme = Yup.object({
+  name: Yup.string().required("Enter Name"),
+  category: Yup.string().required("Enter Category"),
+  price: Yup.number().min(1, "min price atleast 1").required("Enter Price"),
+  description: Yup.string().required("Enter Description"),
+});
 
 // types
 interface AddProductPropsType {}
@@ -32,12 +45,17 @@ const AddProduct: FC<AddProductPropsType> = ({}) => {
     price: "",
     description: "",
   });
+  const [validationErrors, setValidationErrors] = useState<string[]>([]);
+
+  // redux
+  const dispatch = useAppDispatch();
+  const { productList } = useAppSelector((state) => state.product);
 
   const currentFormIndexHandler = useCallback(
     (action: FormIndexHandlerActionType) => {
       switch (action) {
         case "INCREMENT":
-          if (currentFormIndex < 4) {
+          if (currentFormIndex < 3) {
             setCurrentFormIndex((prev) => prev + 1);
           }
           break;
@@ -138,8 +156,30 @@ const AddProduct: FC<AddProductPropsType> = ({}) => {
     }
   }, [currentFormIndex, multiFormData]);
 
-  const handleForm = (event: FormEvent) => {
+  const handleForm = async (event: FormEvent) => {
     event.preventDefault();
+
+    try {
+      const multiFormValidation = new YupFormValidator(
+        yupValidationScheme,
+        multiFormData,
+        (errors) => setValidationErrors(errors)
+      );
+      const validate = await multiFormValidation.validate();
+      if (validate) {
+        const productData: ProductItem = {
+          key: uuidv4(),
+          name: multiFormData.name,
+          category: multiFormData.category,
+          price: multiFormData.price as number,
+          description: multiFormData.description,
+        };
+        dispatch(ProductActions.addProduct(productData));
+        toast.success("product added!");
+      }
+    } catch (error) {
+      toast.error("something went wrong!");
+    }
   };
 
   return (

@@ -33,7 +33,8 @@
       "@interfaces/*": ["./src/interfaces/*"],
       "@helper/*": ["./src/helper/*"],
       "@config/*": ["./src/config/*"],
-      "@redux/*": ["./src/redux/*"]
+      "@redux/*": ["./src/redux/*"],
+      "@hooks/*": ["./src/hooks/*"]
     }
   },
   "include": ["src"],

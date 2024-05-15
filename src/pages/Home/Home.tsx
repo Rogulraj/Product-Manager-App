@@ -1,5 +1,5 @@
 // packages
-import React, { FC } from "react";
+import React, { FC, useCallback, useMemo } from "react";
 
 import { ProductOutlined } from "@ant-design/icons";
 
@@ -12,12 +12,24 @@ import ProductTable from "@components/ProductTable/ProductTable";
 import { Button } from "antd";
 import { useNavigate } from "react-router-dom";
 import { routePaths } from "@constants/routePaths";
+import { useAppSelector } from "@redux/store/store";
+import { extractCategory } from "@helper/extractCategory";
+import { useCategoryList } from "@hooks/useCategoryList";
 
 // types
 interface HomePropsType {}
 
 const Home: FC<HomePropsType> = ({}) => {
   const navigate = useNavigate();
+
+  // redux
+  const { productList } = useAppSelector((state) => state.product);
+
+  // custom hook call
+  const { categoryList } = useCategoryList(productList, [productList]);
+
+  console.log(categoryList);
+
   return (
     <div className={ds.main_layout}>
       <CustomHelmet title="Home" />
@@ -25,13 +37,12 @@ const Home: FC<HomePropsType> = ({}) => {
       <MaxWidthLayout>
         <div className={ds.sub_layout}>
           <h1 className={ds.greeting_text}>Hello Rogul 👋</h1>
-
           <div className={ds.statistics_card}>
             <div className={ds.statistics_total_products_card}>
               <h3 className={ds.statistics_title}>You Have </h3>
               <div className={ds.status_overview_card}>
                 <div className={ds.total_status_card}>
-                  <p className={ds.total_status}>{10}</p>
+                  <p className={ds.total_status}>{productList.length}</p>
                 </div>
               </div>
               <h3 className={ds.statistics_title}>Total Products</h3>
@@ -39,30 +50,11 @@ const Home: FC<HomePropsType> = ({}) => {
             <div className={ds.statistics_category_card}>
               <h3 className={ds.statistics_category_title}>Categories</h3>
               <ul className={ds.product_category_list_card}>
-                <li className={ds.product_category_item_card}>
-                  <p className={ds.category_text}>Mouse</p>
-                </li>
-                <li className={ds.product_category_item_card}>
-                  <p className={ds.category_text}>Mouse</p>
-                </li>
-                <li className={ds.product_category_item_card}>
-                  <p className={ds.category_text}>Mouse</p>
-                </li>
-                <li className={ds.product_category_item_card}>
-                  <p className={ds.category_text}>Mouse</p>
-                </li>
-                <li className={ds.product_category_item_card}>
-                  <p className={ds.category_text}>Mouse</p>
-                </li>{" "}
-                <li className={ds.product_category_item_card}>
-                  <p className={ds.category_text}>Mouse</p>
-                </li>{" "}
-                <li className={ds.product_category_item_card}>
-                  <p className={ds.category_text}>Mouse</p>
-                </li>{" "}
-                <li className={ds.product_category_item_card}>
-                  <p className={ds.category_text}>Mouse</p>
-                </li>
+                {categoryList.map((item, index) => (
+                  <li className={ds.product_category_item_card} key={index}>
+                    <p className={ds.category_text}>{item}</p>
+                  </li>
+                ))}
               </ul>
             </div>
           </div>
@@ -75,7 +67,10 @@ const Home: FC<HomePropsType> = ({}) => {
             </Button>
           </div>
           <div className={ds.product_table_card}>
-            <ProductTable />
+            <ProductTable
+              productList={productList}
+              categoryList={categoryList}
+            />
           </div>
         </div>
       </MaxWidthLayout>

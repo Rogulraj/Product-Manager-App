@@ -127,17 +127,17 @@ const ProductSlice = createSlice({
   initialState,
 
   reducers: {
-    addTask: (state, action: PayloadAction<ProductItem>) => {
+    addProduct: (state, action: PayloadAction<ProductItem>) => {
       state.productList.unshift(action.payload);
     },
-    updateTask: (state, action: PayloadAction<ProductItem>) => {
+    updateProduct: (state, action: PayloadAction<ProductItem>) => {
       state.productList = state.productList.map((item) =>
         item.key === action.payload.key ? action.payload : item
       );
     },
-    removeTask: (state, action: PayloadAction<{ productId: string }>) => {
+    removeProduct: (state, action: PayloadAction<{ productId: string }>) => {
       state.productList = state.productList.filter(
-        (task) => task.key !== action.payload.productId
+        (product) => product.key !== action.payload.productId
       );
     },
   },
