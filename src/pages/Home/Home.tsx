@@ -1,17 +1,23 @@
 // packages
 import React, { FC } from "react";
 
+import { ProductOutlined } from "@ant-design/icons";
+
 // css
 import ds from "./Home.module.css";
 import CustomHelmet from "@components/CustomHelmet/CustomHelmet";
 import PrimaryHeader from "@components/PrimaryHeader/PrimaryHeader";
 import MaxWidthLayout from "@components/Layout/MaxWidthLayout/MaxWidthLayout";
 import ProductTable from "@components/ProductTable/ProductTable";
+import { Button } from "antd";
+import { useNavigate } from "react-router-dom";
+import { routePaths } from "@constants/routePaths";
 
 // types
 interface HomePropsType {}
 
 const Home: FC<HomePropsType> = ({}) => {
+  const navigate = useNavigate();
   return (
     <div className={ds.main_layout}>
       <CustomHelmet title="Home" />
@@ -59,6 +65,14 @@ const Home: FC<HomePropsType> = ({}) => {
                 </li>
               </ul>
             </div>
+          </div>
+          <div className={ds.add_product_btn_card}>
+            <Button
+              type="primary"
+              className={ds.add_product_btn}
+              onClick={() => navigate(routePaths.addProduct)}>
+              Add Product <ProductOutlined />
+            </Button>
           </div>
           <div className={ds.product_table_card}>
             <ProductTable />

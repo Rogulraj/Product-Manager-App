@@ -24,22 +24,22 @@ const AppProvider = ({ children }: AppProviderProps) => {
       fallback={<RotatingLinesLoader strokeWidth="3" width="50" />}>
       <ErrorBoundary FallbackComponent={() => <CustomErrorBoundary />}>
         <HelmetProvider>
-          {/* <Provider store={reduxStore}> */}
-          <Toaster
-            position="top-center"
-            richColors
-            duration={3000}
-            theme="light"
-          />
-          <ConfigProvider
-            theme={{
-              token: {
-                fontFamily: "Nunito",
-              },
-            }}>
-            {children}
-          </ConfigProvider>
-          {/* </Provider> */}
+          <Provider store={reduxStore}>
+            <Toaster
+              position="top-center"
+              richColors
+              duration={3000}
+              theme="light"
+            />
+            <ConfigProvider
+              theme={{
+                token: {
+                  fontFamily: "Nunito",
+                },
+              }}>
+              {children}
+            </ConfigProvider>
+          </Provider>
         </HelmetProvider>
       </ErrorBoundary>
     </React.Suspense>

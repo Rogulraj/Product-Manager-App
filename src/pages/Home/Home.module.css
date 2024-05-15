@@ -5,6 +5,21 @@
   flex-direction: column;
   padding: 10px;
 }
+@media screen and (min-width: 600px) {
+  .main_layout {
+    padding: 20px;
+  }
+}
+@media screen and (min-width: 900px) {
+  .main_layout {
+    padding: 25px;
+  }
+}
+@media screen and (min-width: 1200px) {
+  .main_layout {
+    padding: 30px;
+  }
+}
 
 .sub_layout {
   height: auto;
@@ -28,6 +43,7 @@
 @media screen and (min-width: 900px) {
   .greeting_text {
     margin-top: 45px;
+    font-size: 30px;
   }
 }
 
@@ -54,6 +70,11 @@
   margin: 0px;
   margin-top: 10px;
 }
+@media screen and (min-width: 600px) {
+  .statistics_title {
+    font-size: 18px;
+  }
+}
 
 .status_overview_card {
   height: fit-content;
@@ -79,12 +100,6 @@
   justify-content: center;
   background-color: var(--accent_primary);
 }
-@media screen and (min-width: 600px) {
-  .total_status_card {
-    height: 30px;
-    width: 30px;
-  }
-}
 
 .total_status {
   color: var(--text_color_primary);
@@ -95,7 +110,7 @@
 }
 @media screen and (min-width: 600px) {
   .total_status {
-    font-size: 17px;
+    font-size: 16px;
   }
 }
 
@@ -118,6 +133,16 @@
   font-weight: 700;
   margin: 0px;
 }
+@media screen and (min-width: 600px) {
+  .statistics_category_title {
+    font-size: 18px;
+  }
+}
+@media screen and (min-width: 900px) {
+  .statistics_category_title {
+    font-size: 20px;
+  }
+}
 
 .product_category_list_card {
   list-style-type: decimal;
@@ -128,11 +153,21 @@
   gap: 10px;
   overflow: scroll;
 }
+@media screen and (min-width: 900px) {
+  .product_category_list_card {
+    gap: 15px;
+  }
+}
 
 .product_category_item_card {
   color: var(--text_color_primary);
   font-family: var(--ff_primary);
   font-size: 13px;
+}
+@media screen and (min-width: 600px) {
+  .product_category_item_card {
+    font-size: 16px;
+  }
 }
 
 .category_text {
@@ -142,13 +177,33 @@
   font-weight: 700;
   margin: 0px;
 }
+@media screen and (min-width: 600px) {
+  .category_text {
+    font-size: 16px;
+  }
+}
+
+.add_product_btn_card {
+  height: auto;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: end;
+  margin-top: 15px;
+}
+
+.add_product_btn {
+  height: 40px;
+  font-size: 15px;
+  font-weight: 700;
+}
 
 .product_table_card {
   height: 100%;
   width: 100%;
   background-color: #fff;
   border-radius: 12px;
-  margin-top: 30px;
+  margin-top: 20px;
   padding: 10px;
 }
 @media screen and (min-width: 600px) {

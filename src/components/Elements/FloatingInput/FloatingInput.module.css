@@ -1,0 +1,44 @@
+.floating_input_card {
+  position: relative;
+  margin-top: 20px;
+}
+
+.floating_input {
+  height: 56px;
+  width: 100%;
+  padding: 20px;
+  border: solid 1px var(--border_color_secondary);
+  border-radius: 12px;
+  outline: none;
+  color: var(--constant_black);
+  font-size: 15px;
+  font-weight: 500;
+  font-family: var(--ff);
+  background-color: var(--constant_white);
+}
+.floating_input:focus {
+  border: solid 1px var(--border_color_primary);
+}
+
+.floating_label {
+  position: absolute;
+  top: 18px;
+  right: 0px;
+  left: 20px;
+  color: var(--text_color_four);
+  font-family: var(--ff);
+  font-weight: 500;
+  font-size: 15px;
+  pointer-events: none;
+  width: fit-content;
+  transition: all 0.2s ease-in-out;
+}
+
+.floating_input:focus + .floating_label,
+.floating_input:not(:placeholder-shown) + .floating_label {
+  z-index: 100;
+  transform: translateY(-28px);
+  background-color: var(--constant_white);
+  padding-left: 5px;
+  padding-right: 5px;
+}

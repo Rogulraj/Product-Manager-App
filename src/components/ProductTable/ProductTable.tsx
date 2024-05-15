@@ -13,17 +13,15 @@ import Highlighter from "react-highlight-words";
 
 // css
 import ds from "./ProductTable.module.css";
+import { useAppSelector } from "@redux/store/store";
+import { ProductItem } from "@redux/features/products.feature";
+import TableRowEditModal from "@components/Modals/TableRowEditModal/TableRowEditModal";
+import TableRowDeleteModal from "@components/Modals/TableRowDeleteModal/TableRowDeleteModal";
 
 // types
 interface ProductTablePropsType {}
 
-interface DataType {
-  key: string;
-  name: string;
-  description: string;
-  category: string;
-  price: string;
-}
+interface DataType extends ProductItem {}
 
 type DataIndex = keyof DataType;
 
@@ -36,6 +34,8 @@ const ProductTable: FC<ProductTablePropsType> = ({}) => {
   const searchInput = useRef<InputRef>(null);
   const [filteredInfo, setFilteredInfo] = useState<Filters>({});
   const [paginationSize, setPaginationSize] = useState<number>(10);
+
+  const { productList } = useAppSelector((state) => state.product);
 
   const handleSearch = (
     selectedKeys: string[],
@@ -144,39 +144,13 @@ const ProductTable: FC<ProductTablePropsType> = ({}) => {
     setFilteredInfo(filters);
   };
 
-  const dataSource: DataType[] = [
-    {
-      key: "1",
-      name: "transformer",
-      description: "bla bla bla",
-      category: "Mouse",
-      price: "$100",
-    },
-    {
-      key: "2",
-      name: "transformer",
-      description: "bla bla bla",
-      category: "Mouse",
-      price: "$100",
-    },
-  ];
-
-  for (let i = 0; i < 100; i++) {
-    dataSource.push({
-      key: `${i + 4}`,
-      name: "transformer",
-      description: "bla bla bla",
-      category: "Mouse",
-      price: "$100",
-    });
-  }
+  const dataSource: DataType[] = productList;
 
   const columns: TableColumnsType<DataType> = [
     {
       title: "Name",
       dataIndex: "name",
       key: "name",
-
       ...getColumnSearchProps("name"),
       ellipsis: true,
     },
@@ -204,6 +178,18 @@ const ProductTable: FC<ProductTablePropsType> = ({}) => {
       dataIndex: "price",
       key: "price",
       ellipsis: true,
+    },
+    {
+      title: "Operation",
+      dataIndex: "operation",
+      render: (_, record) => {
+        return (
+          <div className={ds.table_operation_card}>
+            <TableRowEditModal />
+            <TableRowDeleteModal />
+          </div>
+        );
+      },
     },
   ];
 

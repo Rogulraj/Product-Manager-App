@@ -1,0 +1,100 @@
+.main_layout {
+  min-height: 100vh;
+  background-color: var(--bg_primary);
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+}
+@media screen and (min-width: 600px) {
+  .main_layout {
+    padding: 20px;
+  }
+}
+@media screen and (min-width: 900px) {
+  .main_layout {
+    padding: 25px;
+  }
+}
+@media screen and (min-width: 1200px) {
+  .main_layout {
+    padding: 30px;
+  }
+}
+
+.sub_layout {
+  height: 100%;
+  width: 100%;
+  padding: 10px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.form_container {
+  height: 100%;
+  width: 100%;
+  background-color: var(--constant_white);
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+}
+@media screen and (min-width: 600px) {
+  .form_container {
+    min-height: 400px;
+    padding: 20px;
+  }
+}
+
+.steps_style {
+  height: 300px;
+  width: 100%;
+}
+@media screen and (min-width: 576px) {
+  .steps_style {
+    height: auto;
+  }
+}
+
+.input_wrapper {
+  max-width: 400px;
+}
+
+.back_btn_card {
+  height: fit-content;
+  width: fit-content;
+  align-self: flex-start;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.go_back_text {
+  color: var(--constant_black);
+  font-family: var(--ff_primary);
+  font-size: 15px;
+  font-weight: 600;
+  margin: 0px;
+}
+
+.form_card {
+  height: 100%;
+  width: 100%;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+}
+
+.name_card {
+  height: auto;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}

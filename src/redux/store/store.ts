@@ -1,3 +1,4 @@
+import { ProductReducer } from "@redux/features/products.feature";
 import { configureStore } from "@reduxjs/toolkit";
 
 import { useSelector } from "react-redux";
@@ -5,7 +6,9 @@ import { useDispatch } from "react-redux";
 import { TypedUseSelectorHook } from "react-redux";
 
 const store = configureStore({
-  reducer: {},
+  reducer: {
+    product: ProductReducer,
+  },
 
   middleware(getDefaultMiddleware) {
     return getDefaultMiddleware().concat();

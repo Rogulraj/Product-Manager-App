@@ -8,6 +8,7 @@ import {
 
 // constants
 import { routePaths } from "@constants/routePaths";
+import AddProduct from "@pages/AddProduct/AddProduct";
 
 // pages
 const Home = lazy(() => import("@pages/Home/Home"));
@@ -17,6 +18,10 @@ const AppRoutes = () => {
     {
       path: "/",
       element: <Home />,
+    },
+    {
+      path: "/add-product",
+      element: <AddProduct />,
     },
     {
       path: "*",
