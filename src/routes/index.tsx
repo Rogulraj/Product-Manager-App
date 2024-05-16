@@ -6,13 +6,10 @@ import {
   createBrowserRouter,
 } from "react-router-dom";
 
-// constants
-import { routePaths } from "@constants/routePaths";
-import AddProduct from "@pages/AddProduct/AddProduct";
-import Analytics from "@pages/Analytics/Analytics";
-
 // pages
 const Home = lazy(() => import("@pages/Home/Home"));
+const AddProduct = lazy(() => import("@pages/AddProduct/AddProduct"));
+const Analytics = lazy(() => import("@pages/Analytics/Analytics"));
 
 const AppRoutes = () => {
   const router = createBrowserRouter([
