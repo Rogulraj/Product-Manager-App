@@ -60,6 +60,9 @@ const PrimaryHeader: FC<PrimaryHeaderPropsType> = ({}) => {
             <NavLink to={routePaths.addProduct} className={ds.sm_nav_item}>
               Add Product
             </NavLink>
+            <NavLink to={routePaths.analytics} className={ds.md_nav_item}>
+              Analytics
+            </NavLink>
           </nav>
         </div>
         <div className={ds.md_container}>
@@ -77,6 +80,9 @@ const PrimaryHeader: FC<PrimaryHeaderPropsType> = ({}) => {
             </NavLink>
             <NavLink to={routePaths.addProduct} className={ds.md_nav_item}>
               Add Product
+            </NavLink>
+            <NavLink to={routePaths.analytics} className={ds.md_nav_item}>
+              Analytics
             </NavLink>
             <img src={User1} alt="user-1" className={ds.md_user_image} />
           </nav>
