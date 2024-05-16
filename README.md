@@ -30,6 +30,7 @@ The Product Management App is a web application designed to facilitate the manag
 ├── tsconfig.node.json
 ├── vite.config.ts
 ├── index.html
+├── .env.example
 ├── package.json
 └── package-lock.json
 ```
