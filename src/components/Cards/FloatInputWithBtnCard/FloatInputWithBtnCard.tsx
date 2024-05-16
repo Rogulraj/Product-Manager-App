@@ -1,6 +1,5 @@
 // packages
 import React, { FC } from "react";
-
 import FloatingInput, {
   FloatingInputPropsType,
 } from "@components/Elements/FloatingInput/FloatingInput";

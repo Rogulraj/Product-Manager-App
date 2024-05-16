@@ -135,9 +135,9 @@ const ProductSlice = createSlice({
         item.key === action.payload.key ? action.payload : item
       );
     },
-    removeProduct: (state, action: PayloadAction<{ productId: string }>) => {
+    removeProduct: (state, action: PayloadAction<{ productKey: string }>) => {
       state.productList = state.productList.filter(
-        (product) => product.key !== action.payload.productId
+        (product) => product.key !== action.payload.productKey
       );
     },
   },

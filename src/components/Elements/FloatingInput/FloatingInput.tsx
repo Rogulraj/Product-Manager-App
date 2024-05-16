@@ -11,6 +11,7 @@ export interface FloatingInputPropsType {
   elementRef?: RefObject<HTMLInputElement>;
   value?: string | number;
   onChangeFn?: (event: ChangeEvent<HTMLInputElement>) => void;
+  onKeyDownFn?: (event: React.KeyboardEvent<HTMLInputElement>) => void;
 }
 
 const FloatingInput: FC<FloatingInputPropsType> = ({
@@ -19,6 +20,7 @@ const FloatingInput: FC<FloatingInputPropsType> = ({
   elementRef,
   value,
   onChangeFn,
+  onKeyDownFn,
 }) => {
   /** methods */
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -36,6 +38,7 @@ const FloatingInput: FC<FloatingInputPropsType> = ({
         ref={elementRef}
         value={value}
         onChange={handleChange}
+        onKeyDown={onKeyDownFn && onKeyDownFn}
       />
       <label className={ds.floating_label}>{labelText}</label>
     </div>

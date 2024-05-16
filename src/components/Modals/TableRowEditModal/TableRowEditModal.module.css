@@ -48,3 +48,31 @@
 .text_area ::placeholder {
   color: var(--text_color_four);
 }
+
+.category_card {
+  height: auto;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  margin-top: 15px;
+}
+
+.category_title {
+  color: var(--constant_black);
+  font-family: var(--ff_primary);
+  font-size: 15px;
+  font-weight: 600;
+  margin: 0px;
+}
+
+.category_drop_down div {
+  height: 56px;
+  width: 300px;
+}
+
+.validation_error_message {
+  color: var(--danger);
+  font-family: var(--ff_primary);
+  font-size: 15px;
+  font-weight: 600;
+}

@@ -98,3 +98,60 @@
   align-items: center;
   gap: 10px;
 }
+
+.drop_down_card div {
+  height: 56px;
+  width: 300px;
+  color: black;
+  margin-top: 10px;
+}
+
+.description_card {
+  height: auto;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+@media screen and (min-width: 576px) {
+  .description_card {
+    margin-top: 30px;
+  }
+}
+
+.text_area {
+  height: 200px;
+  width: 270px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  color: var(--constant_black);
+}
+@media screen and (min-width: 576px) {
+  .text_area {
+    width: 350px;
+  }
+}
+
+.text_area textarea {
+  padding: 10px 15px;
+}
+
+.text_area ::placeholder {
+  color: var(--text_color_four);
+}
+
+.btn_card {
+  height: fit-content;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: end;
+}
+
+.validation_error_message {
+  color: var(--danger);
+  font-family: var(--ff_primary);
+  font-size: 15px;
+  font-weight: 600;
+}

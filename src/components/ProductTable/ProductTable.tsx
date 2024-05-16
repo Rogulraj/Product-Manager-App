@@ -1,5 +1,13 @@
 // packages
-import React, { FC, useRef, useState } from "react";
+import React, {
+  CSSProperties,
+  FC,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { SearchOutlined } from "@ant-design/icons";
 import type {
   InputRef,
@@ -10,11 +18,15 @@ import type {
 import { Button, Input, Space, Table } from "antd";
 import type { FilterDropdownProps } from "antd/es/table/interface";
 import Highlighter from "react-highlight-words";
+import randomColor from "randomcolor";
 
 // css
 import ds from "./ProductTable.module.css";
-import { useAppSelector } from "@redux/store/store";
+
+// redux
 import { ProductItem } from "@redux/features/products.feature";
+
+// components
 import TableRowEditModal from "@components/Modals/TableRowEditModal/TableRowEditModal";
 import TableRowDeleteModal from "@components/Modals/TableRowDeleteModal/TableRowDeleteModal";
 
@@ -24,23 +36,35 @@ interface ProductTablePropsType {
   categoryList: string[];
 }
 
-interface DataType extends ProductItem {}
+interface DataSourceType extends ProductItem {
+  style?: CSSProperties;
+}
 
-type DataIndex = keyof DataType;
+interface PaginationType {
+  current: number;
+  pageSize: number;
+}
 
-type OnChange = NonNullable<TableProps<DataType>["onChange"]>;
-type Filters = Parameters<OnChange>[1];
+type DataIndex = keyof DataSourceType;
+
+type OnChange = NonNullable<TableProps<DataSourceType>["onChange"]>;
 
 const ProductTable: FC<ProductTablePropsType> = ({
   categoryList,
   productList,
 }) => {
+  /** state's */
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
-  const searchInput = useRef<InputRef>(null);
-  const [filteredInfo, setFilteredInfo] = useState<Filters>({});
-  const [paginationSize, setPaginationSize] = useState<number>(10);
+  const [currPagination, setCurrPagination] = useState<PaginationType>({
+    current: 1,
+    pageSize: 10,
+  });
 
+  /** ref's */
+  const searchInput = useRef<InputRef>(null);
+
+  /** table search handler */
   const handleSearch = (
     selectedKeys: string[],
     confirm: FilterDropdownProps["confirm"],
@@ -51,14 +75,21 @@ const ProductTable: FC<ProductTablePropsType> = ({
     setSearchedColumn(dataIndex);
   };
 
-  const handleReset = (clearFilters: () => void) => {
+  /** table reset handler */
+  const handleReset = (
+    clearFilters: () => void,
+    confirm: FilterDropdownProps["confirm"]
+  ) => {
     clearFilters();
     setSearchText("");
+    setSearchedColumn("");
+    confirm();
   };
 
+  /** table filter & sort option provider */
   const getColumnSearchProps = (
     dataIndex: DataIndex
-  ): TableColumnType<DataType> => ({
+  ): TableColumnType<DataSourceType> => ({
     filterDropdown: ({
       setSelectedKeys,
       selectedKeys,
@@ -91,7 +122,7 @@ const ProductTable: FC<ProductTablePropsType> = ({
             Search
           </Button>
           <Button
-            onClick={() => clearFilters && handleReset(clearFilters)}
+            onClick={() => clearFilters && handleReset(clearFilters, confirm)}
             size="small"
             style={{ width: 90 }}>
             Reset
@@ -143,68 +174,109 @@ const ProductTable: FC<ProductTablePropsType> = ({
       ),
   });
 
-  const handleChange: OnChange = (pagination, filters, sorter) => {
-    console.log("Various parameters", pagination, filters, sorter);
-    setFilteredInfo(filters);
+  /** row style provider */
+  const getRowStyle = () => {
+    const color = randomColor({
+      luminosity: "light",
+      format: "rgba",
+      alpha: 0.2,
+    });
+    return { backgroundColor: color };
   };
 
-  const dataSource: DataType[] = productList;
+  /** applying style to the each row */
+  const applyRowStyles = useCallback(() => {
+    categoryList.forEach((item) => {
+      const nodes = document.querySelectorAll(`.row_${item.toLowerCase()}`);
+      const rowStyle = getRowStyle();
 
-  const columns: TableColumnsType<DataType> = [
-    {
-      title: "Name",
-      dataIndex: "name",
-      key: "name",
-      ...getColumnSearchProps("name"),
-      ellipsis: true,
-    },
-    {
-      title: "Description",
-      dataIndex: "description",
-      key: "description",
-      ...getColumnSearchProps("description"),
-      ellipsis: true,
-    },
-    {
-      title: "Category",
-      dataIndex: "category",
-      key: "category",
-      filters: categoryList.map((item) => {
-        return {
-          text: item,
-          value: item,
-        };
-      }),
-      filteredValue: filteredInfo.category || null,
-      onFilter: (value, record) => record.category.includes(value as string),
-      ellipsis: true,
-    },
-    {
-      title: "Price",
-      dataIndex: "price",
-      key: "price",
-      ellipsis: true,
-    },
-    {
-      title: "Operation",
-      dataIndex: "operation",
-      render: (_, record) => {
-        return (
-          <div className={ds.table_operation_card}>
-            <TableRowEditModal />
-            <TableRowDeleteModal />
-          </div>
-        );
+      nodes.forEach((item) => {
+        item.style.backgroundColor = "";
+        item.style.backgroundColor = rowStyle.backgroundColor;
+      });
+    });
+  }, []);
+
+  /**  handling table properties data change*/
+  const handleChange: OnChange = (pagination) => {
+    setCurrPagination({
+      current: pagination.current as number,
+      pageSize: pagination.pageSize as number,
+    });
+  };
+
+  /** defining column of the table */
+  const columns: TableColumnsType<DataSourceType> = useMemo(() => {
+    return [
+      {
+        title: "Name",
+        dataIndex: "name",
+        key: "name",
+        ...getColumnSearchProps("name"),
+        width: "20%",
+        ellipsis: true,
       },
-    },
-  ];
+      {
+        title: "Description",
+        dataIndex: "description",
+        key: "description",
+        ...getColumnSearchProps("description"),
+        width: "40%",
+        ellipsis: true,
+      },
+      {
+        title: "Category",
+        dataIndex: "category",
+        key: "category",
+        filters: categoryList.map((item) => {
+          return {
+            text: item,
+            value: item,
+          };
+        }),
+        onFilter: (value, record) => record.category.includes(value as string),
+        ellipsis: true,
+      },
+      {
+        title: "Price",
+        dataIndex: "price",
+        key: "price",
+        ellipsis: true,
+      },
+      {
+        title: "Operation",
+        dataIndex: "operation",
+        render: (_, record) => {
+          return (
+            <div className={ds.table_operation_card} key={record.key}>
+              <TableRowEditModal productData={record} />
+              <TableRowDeleteModal productData={record} />
+            </div>
+          );
+        },
+      },
+    ];
+  }, [productList]);
+
+  /** table data source */
+  const dataSource: DataSourceType[] = useMemo(
+    () => productList,
+    [productList]
+  );
+
+  useEffect(() => {
+    applyRowStyles();
+  }, [productList, categoryList, currPagination]);
 
   return (
     <Table
       dataSource={dataSource}
       columns={columns}
-      scroll={{ x: "auto", y: 550 }}
+      scroll={{ x: 800, y: 550 }}
       onChange={handleChange}
+      rowClassName={(record) => {
+        return `row_${record.category.toLowerCase()}`;
+      }}
     />
   );
 };

@@ -1,29 +1,37 @@
 // packages
 import React, { FC, FormEvent, useCallback, useMemo, useState } from "react";
-import * as Yup from "yup";
 import { v4 as uuidv4 } from "uuid";
+import { toast } from "sonner";
+import { Button, Steps } from "antd";
+import { useNavigate } from "react-router-dom";
+import TextArea from "antd/es/input/TextArea";
 
 // css
 import ds from "./AddProduct.module.css";
-import CustomHelmet from "@components/CustomHelmet/CustomHelmet";
-import PrimaryHeader from "@components/PrimaryHeader/PrimaryHeader";
-import MaxWidthLayout from "@components/Layout/MaxWidthLayout/MaxWidthLayout";
-import FloatingInput from "@components/Elements/FloatingInput/FloatingInput";
+
+// icons
 import { IoIosArrowRoundBack } from "react-icons/io";
 
-import { Steps } from "antd";
-import FloatInputWithBtnCard from "@components/Cards/FloatInputWithBtnCard/FloatInputWithBtnCard";
+// utils
 import { YupFormValidator } from "@utils/yupFormValidator";
-import { toast } from "sonner";
+
+// redux
 import { useAppDispatch, useAppSelector } from "@redux/store/store";
 import { ProductActions, ProductItem } from "@redux/features/products.feature";
 
-const yupValidationScheme = Yup.object({
-  name: Yup.string().required("Enter Name"),
-  category: Yup.string().required("Enter Category"),
-  price: Yup.number().min(1, "min price atleast 1").required("Enter Price"),
-  description: Yup.string().required("Enter Description"),
-});
+// constants
+import { routePaths } from "@constants/routePaths";
+import { productYupValidationScheme } from "@constants/productYupValidationSchema";
+
+// custom hooks
+import { useCategoryList } from "@hooks/useCategoryList";
+
+// components
+import CustomHelmet from "@components/CustomHelmet/CustomHelmet";
+import PrimaryHeader from "@components/PrimaryHeader/PrimaryHeader";
+import MaxWidthLayout from "@components/Layout/MaxWidthLayout/MaxWidthLayout";
+import CustomDropDown from "@components/Elements/CustomDropDown/CustomDropDown";
+import FloatInputWithBtnCard from "@components/Cards/FloatInputWithBtnCard/FloatInputWithBtnCard";
 
 // types
 interface AddProductPropsType {}
@@ -47,10 +55,17 @@ const AddProduct: FC<AddProductPropsType> = ({}) => {
   });
   const [validationErrors, setValidationErrors] = useState<string[]>([]);
 
-  // redux
+  /** redux */
   const dispatch = useAppDispatch();
   const { productList } = useAppSelector((state) => state.product);
 
+  /** custom hooks */
+  const { categoryList } = useCategoryList(productList, [productList]);
+
+  /** router-dom */
+  const navigate = useNavigate();
+
+  /** current form index setter */
   const currentFormIndexHandler = useCallback(
     (action: FormIndexHandlerActionType) => {
       switch (action) {
@@ -71,6 +86,7 @@ const AddProduct: FC<AddProductPropsType> = ({}) => {
     [currentFormIndex]
   );
 
+  /** based on current form index this fn return form fields component */
   const findCurrentForm = useMemo(() => {
     switch (currentFormIndex) {
       case 0:
@@ -92,19 +108,24 @@ const AddProduct: FC<AddProductPropsType> = ({}) => {
         );
       case 1:
         return (
-          <div className={ds.name_card}>
-            <FloatInputWithBtnCard
-              inputType="text"
-              labelText="Category"
-              btnType="primary"
-              btnTitle="Next"
-              btnHtmlType="button"
-              onClickBtnFn={() => currentFormIndexHandler("INCREMENT")}
-              onChangeFn={(e) =>
-                setMultiFormData({ ...multiFormData, category: e.target.value })
+          <div className={`${ds.name_card} ${ds.drop_down_card}`}>
+            <CustomDropDown
+              mainPlaceHolder="Category"
+              subPlaceHolder="New Category"
+              options={categoryList}
+              selectedValue={multiFormData.category}
+              setSelectValue={(val) =>
+                setMultiFormData({ ...multiFormData, category: val as string })
               }
-              value={multiFormData.category}
             />
+            <div className={ds.btn_card}>
+              <Button
+                type="primary"
+                htmlType="button"
+                onClick={() => currentFormIndexHandler("INCREMENT")}>
+                Next
+              </Button>
+            </div>
           </div>
         );
 
@@ -132,22 +153,25 @@ const AddProduct: FC<AddProductPropsType> = ({}) => {
         );
       case 3:
         return (
-          <div className={ds.name_card}>
-            <FloatInputWithBtnCard
-              inputType="text"
-              labelText="Description"
-              btnType="primary"
-              btnTitle="Add Product"
-              btnHtmlType="submit"
-              onClickBtnFn={() => currentFormIndexHandler("INCREMENT")}
-              onChangeFn={(e) =>
+          <div className={ds.description_card}>
+            <TextArea
+              showCount
+              maxLength={500}
+              placeholder="Product Description..."
+              className={ds.text_area}
+              value={multiFormData.description}
+              onChange={(e) =>
                 setMultiFormData({
                   ...multiFormData,
                   description: e.target.value,
                 })
               }
-              value={multiFormData.description}
             />
+            <div className={ds.btn_card}>
+              <Button type="primary" htmlType="submit">
+                Add
+              </Button>
+            </div>
           </div>
         );
 
@@ -156,12 +180,13 @@ const AddProduct: FC<AddProductPropsType> = ({}) => {
     }
   }, [currentFormIndex, multiFormData]);
 
+  /** this fn handling form submit and validation */
   const handleForm = async (event: FormEvent) => {
     event.preventDefault();
 
     try {
       const multiFormValidation = new YupFormValidator(
-        yupValidationScheme,
+        productYupValidationScheme,
         multiFormData,
         (errors) => setValidationErrors(errors)
       );
@@ -176,6 +201,7 @@ const AddProduct: FC<AddProductPropsType> = ({}) => {
         };
         dispatch(ProductActions.addProduct(productData));
         toast.success("product added!");
+        navigate(routePaths.home);
       }
     } catch (error) {
       toast.error("something went wrong!");
@@ -219,6 +245,11 @@ const AddProduct: FC<AddProductPropsType> = ({}) => {
                   <p className={ds.go_back_text}>Back</p>
                 </div>
                 {findCurrentForm}
+                {validationErrors.length > 0 ? (
+                  <p className={ds.validation_error_message}>
+                    ** {validationErrors[0]} **
+                  </p>
+                ) : null}
               </div>
             </form>
           </div>

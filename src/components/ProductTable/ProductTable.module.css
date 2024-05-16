@@ -1,9 +1,17 @@
 .table_operation_card {
   height: auto;
-  width: 60px;
+  width: 70px;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
   gap: 15px;
+}
+
+.baby {
+  background-color: red;
+}
+
+.common {
+  background-color: green;
 }

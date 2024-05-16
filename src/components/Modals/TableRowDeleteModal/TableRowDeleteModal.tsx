@@ -1,19 +1,34 @@
 // packages
 import React, { FC, useState } from "react";
-
-// css
-import ds from "./TableRowDeleteModal.module.css";
 import { Modal } from "antd";
 import { DeleteOutlined } from "@ant-design/icons";
 import { ExclamationCircleFilled } from "@ant-design/icons";
-import { customTheme } from "@constants/customTheme";
+import { toast } from "sonner";
 
 const { confirm } = Modal;
 
-// types
-interface TableRowDeleteModalPropsType {}
+// css
+import ds from "./TableRowDeleteModal.module.css";
 
-const TableRowDeleteModal: FC<TableRowDeleteModalPropsType> = ({}) => {
+// constants
+import { customTheme } from "@constants/customTheme";
+
+// redux
+import { useAppDispatch } from "@redux/store/store";
+import { ProductActions, ProductItem } from "@redux/features/products.feature";
+
+// types
+interface TableRowDeleteModalPropsType {
+  productData: ProductItem;
+}
+
+const TableRowDeleteModal: FC<TableRowDeleteModalPropsType> = ({
+  productData,
+}) => {
+  /** redux */
+  const dispatch = useAppDispatch();
+
+  /** confirmation modal */
   const showDeleteConfirm = () => {
     confirm({
       title: "Are you sure delete this product?",
@@ -23,11 +38,10 @@ const TableRowDeleteModal: FC<TableRowDeleteModalPropsType> = ({}) => {
       okType: "danger",
       cancelText: "No",
       onOk() {
-        console.log("OK");
+        dispatch(ProductActions.removeProduct({ productKey: productData.key }));
+        toast.info(`${productData.name} deleted!`);
       },
-      onCancel() {
-        console.log("Cancel");
-      },
+      onCancel() {},
     });
   };
 
@@ -38,14 +52,6 @@ const TableRowDeleteModal: FC<TableRowDeleteModalPropsType> = ({}) => {
         size={20}
         onClick={showDeleteConfirm}
       />
-      {/* <Modal
-        title="Are you Sure?"
-        centered
-        open={isModal}
-        onOk={() => setIsModal(false)}
-        onCancel={() => setIsModal(false)}>
-        <form className={ds.form_layout}>delete</form>
-      </Modal> */}
     </>
   );
 };

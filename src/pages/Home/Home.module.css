@@ -33,6 +33,7 @@
   font-family: var(--ff_primary);
   font-weight: 600;
   margin: 0px;
+  margin-top: 10px;
 }
 @media screen and (min-width: 600px) {
   .greeting_text {

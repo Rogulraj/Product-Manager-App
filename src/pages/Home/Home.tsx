@@ -1,20 +1,26 @@
 // packages
 import React, { FC, useCallback, useMemo } from "react";
-
+import { useNavigate } from "react-router-dom";
 import { ProductOutlined } from "@ant-design/icons";
+import { Button } from "antd";
 
 // css
 import ds from "./Home.module.css";
+
+// redux
+import { useAppSelector } from "@redux/store/store";
+
+// constants
+import { routePaths } from "@constants/routePaths";
+
+// hooks
+import { useCategoryList } from "@hooks/useCategoryList";
+
+// components
 import CustomHelmet from "@components/CustomHelmet/CustomHelmet";
 import PrimaryHeader from "@components/PrimaryHeader/PrimaryHeader";
 import MaxWidthLayout from "@components/Layout/MaxWidthLayout/MaxWidthLayout";
 import ProductTable from "@components/ProductTable/ProductTable";
-import { Button } from "antd";
-import { useNavigate } from "react-router-dom";
-import { routePaths } from "@constants/routePaths";
-import { useAppSelector } from "@redux/store/store";
-import { extractCategory } from "@helper/extractCategory";
-import { useCategoryList } from "@hooks/useCategoryList";
 
 // types
 interface HomePropsType {}
@@ -27,8 +33,6 @@ const Home: FC<HomePropsType> = ({}) => {
 
   // custom hook call
   const { categoryList } = useCategoryList(productList, [productList]);
-
-  console.log(categoryList);
 
   return (
     <div className={ds.main_layout}>
