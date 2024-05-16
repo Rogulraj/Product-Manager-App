@@ -1,15 +1,11 @@
-import { cleanEnv, port, str } from "envalid";
+import { cleanEnv, port } from "envalid";
 
 interface ValidateEnvType {
-  VITE_API_BASE_URL: string;
-  VITE_API_PORT: number;
-  VITE_SESSION_TOKEN_NAME: string;
+  VITE_PORT: number;
 }
 
 export function ValidateEnv(): ValidateEnvType {
   return cleanEnv(import.meta.env, {
-    VITE_API_BASE_URL: str(),
-    VITE_API_PORT: port(),
-    VITE_SESSION_TOKEN_NAME: str(),
+    VITE_PORT: port(),
   });
 }

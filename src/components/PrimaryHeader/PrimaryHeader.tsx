@@ -12,6 +12,7 @@ import { routePaths } from "@constants/routePaths";
 
 // assets
 import User1 from "@assets/user1.jpg";
+import Logo from "@assets/product_management_logo.png";
 
 // types
 interface PrimaryHeaderPropsType {}
@@ -63,6 +64,7 @@ const PrimaryHeader: FC<PrimaryHeaderPropsType> = ({}) => {
         </div>
         <div className={ds.md_container}>
           <div className={ds.md_title_container}>
+            <img src={Logo} alt="logo" className={ds.logo_style} />
             <h1
               className={ds.md_title_text}
               onClick={() => navigate(routePaths.home)}>

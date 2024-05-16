@@ -106,7 +106,15 @@
   height: fit-content;
   width: fit-content;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo_style {
+  height: auto;
+  width: 50px;
+  border-radius: 100px;
 }
 
 .md_title_text {
